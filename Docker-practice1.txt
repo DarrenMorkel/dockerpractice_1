@@ -1,0 +1,104 @@
+##########################################################
+
+1) Launch the docker in linux machine
+
+ANSWER:
+sudo yum install docker
+sudo servive docker start
+sudo docker run hello-world
+
+2) Create a ubuntu container.....inside that create some files...also install apache2 in that ubuntu container....
+Now i want you to create replicas of the container ...how will you create it?  please put screeenshot wise screenshot for your personal notes
+
+ANSWER:
+docker run -it --name dockprac ubuntu /bin/bash
+ls
+touch file1 file2 file3
+ls
+apt update -y
+apt install apache2
+ls
+exit
+docker commit dockprac image1
+docker run -it --name dockpracconn2 image1 /bin/bash
+exit
+docker run -it --name dockpracconn3 image2 /bin/bash
+
+
+3) I want to create a shared volume (akshatvol) in ec2 which can be shared between 5 containers(c001,c002,c003,c004,c005) ....how will i do that? 
+
+ANSWER:
+docker run -it --name c001 -v akshatvol:/myvolume ubuntu /bin/bash
+ls
+cd myvolume
+touch file1 file2
+exit
+docker run -it --name c002 -v akshatvol:/myvolume ubuntu /bin/bash
+repeat
+
+4) watch the video and perform the lab: https://www.youtube.com/watch?v=bR_uLlxlKwE&t=309s
+
+ANSWER:
+docker run -it --name bindmount1 -v "$(pwd)"/darren:/app ubuntu /bin/bash
+ls
+cd app
+ls
+touch file1
+ls (file1 is present)
+exit
+ls ('darren' directory is present)
+cd darren 
+ls (file1 is present)
+
+inside the 'daren' directory:
+docker run -it --name volnew -v darren1:/app1 ubuntu /bin/bash
+ls (app1 directory present)
+cd app1
+ls
+touch file1
+ls (file1 present)
+exit
+docker volume inspect darren1
+this is the output:
+[
+    {
+        "CreatedAt": "2022-10-06T07:33:51Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/darren1/_data",
+        "Name": "darren1",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+copy: /var/lib/docker/volumes/darren1/_data
+
+cd /var/lib/docker/volumes/darren1/_data
+ls (file1 is present)
+
+Main difference between bindmount and docker volume:
+
+Docker is created within the docker itself, inside this folder there is a directory called volumes, and inside here the shared volume is created
+
+Bindmount is created within the host itself.
+
+
+5) Perform this : https://www.youtube.com/watch?v=y2ZiT47tsm4  (not the part of devops...just to make you understand the importance of apache server and its use)
+
+ANSWER:
+sudo su
+yum update -y
+yum install httpd -y
+which httpd
+cd /var/www/html
+
+****WHEN INSIDE THE HTML FOLDER, YOU NEED TO RUN: sudo chmod 777 /var/www/html !!! This gives permission to upload the zip file.
+unzip website.zip
+service httpd status
+service httpd start
+Once httpd is running, you can now copy the public ip of your instance, paste in the browser, and the website should be working.
+
+6) i want your answers to be pushed by you in your public github repos. 
+
+####################################################
